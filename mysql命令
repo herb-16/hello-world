@@ -1,3 +1,22 @@
 "mysql"不是内部或外部命令，也不是可运行的程序或批处理文件
 解决办法：1、win+r1、win+r-->services.msc-->右击mysql服务-->属性-->找到可执行路径并复制出来
 　　　　　2、右击“我的电脑”-->属性-->高级系统设置-->环境变量-->系统变量-->PATH-->新增-->上面的“可执行路径”
+
+cmd下登录时ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)
+按照如下步骤执行：
+1.找到配置文件my.ini （mysql的安装路径的bin目录） ，然后将其打开，可以选择用记事本打开.
+2.打开后，Ctrl+F 搜索[mysqld]。
+找到后，在[mysqld]下面添加skip-grant-tables，保存退出。
+PS：若提示不让保存时，可以将该文件剪切到桌面，更改保存后再复制到mySQL目录下
+3.保存后重启mySQL
+4.然后运行cmd
+切换到mysql的安装目录，在cmd中输入：cd  C:\Program Files (x86)\MySQL\MySQL Server 5.0\bin，
+然后就可以执行mysql命令了。
+输入mysql -u root -p就可以不用密码登录了，出现password：的时候直接回车可以进入，到此步骤成功连接到mysql数据库了。
+5.修改密码
+依次执行如下命令：
+(1)use mysql；注释：切换到当前数据库
+(2) UPDATE user SET Password=PASSWORD(’newpassword’) where USER=’root’;    注释：修改密码，newpassword为新修改的密码，可以自己定义
+(3)flush privileges; 注释：刷新数据库
+(4)quitBye;  注释：退出数据库
+6.改好之后，再修改一下my.ini这个文件，把我们刚才加入的"skip-grant-tables"这行删除，保存退出再重启mysql服务就可以了。
